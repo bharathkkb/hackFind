@@ -1,0 +1,128 @@
+<head>
+  <title>HackFind</title>
+  <meta name="viewport" content="user-scalable=no, width=device-width, maximum-scale=1, initial-scale=1, minimum-scale=1">
+  <script type="text/javascript" src="headroom.min.js"></script>
+</head>
+
+<body>
+
+	
+  	
+	<div class="container"> 
+	{{>portal}}
+	</div>
+
+  <script type="text/javascript">
+  var x = document.querySelector('.navbar');
+  var headroom = new Headroom(x);
+  headroom.init();
+
+
+  </script>
+
+</body>
+<template name="portal">
+
+{{>head}}
+
+<div class="container-top">
+
+</div>
+
+
+
+	<div class="container-right">
+      <div class="search search-pc"><form class="searchform">{{> esInput index="users" placeholder="Find Hackers..." }}</form></div>
+      {{#if mod}}
+      	<form class="addA searchform"> <input id="addAnno" type="text" placeholder="Add Announcement"><button type="submit" style="font-size:15px">Add</button></form>
+      {{/if}}
+      <div class="announcements">
+      <h1>Announcements</h1>
+      {{#each ann}}
+
+      {{content}} - <b>{{formatDate time "frmt"}}</b><br><br>
+
+      {{/each}}
+      </div>
+      </div>
+
+
+
+      <div class="container-left"> 
+      <div class="search search-mob"><form class="searchform">{{> esInput index="users" placeholder="Find Hackers..." }}</form></div>
+      {{#esEach index="users"}}
+            {{> user}}
+        {{/esEach}}
+
+        <h4>Recently Added</h4>
+
+      {{#each users}}
+        {{> user}}
+      {{/each}}
+      </div>
+
+
+      
+
+
+</template>
+<template name="head">
+
+<nav class="navbar">
+	<div class="container">
+	<img class="logo" height="100" src="logo.png" /> 
+	<div class="title">HackFind</div>
+	<div class="user">
+	{{#if currentUser}}
+        <h4 class="status">You've been added</h4>
+        {{>loginButtons}}
+      {{else}}
+      {{>loginButtons}}
+        <h4 class="status">Sign in and add contact details with HackIndia 2015 attendees</h4>
+        
+        
+      {{/if}}
+	<div class="user-name">
+	{{#if currentUser}}
+		<!-- Yo {{name}} -->
+		
+		
+		{{#if services.twitter.screenName}}
+		<img class="user-img img-circle" src="{{services.twitter.profile_image_url}}" />
+		{{else}}
+		<img class="user-img img-circle" src="http://graph.facebook.com/{{faimg}}/picture"/> 
+		{{/if}}
+	{{/if}}
+	</div>
+	
+
+	</div>
+	<div class="user-sub">hackIndia</div>
+	
+	</div>
+	
+	</nav>
+</template>
+
+
+<template name="user">
+<div class="pcard">
+ {{#if services.twitter.screenName}}
+  <a target="_blank" href="http://twitter.com/{{services.twitter.screenName}}"><img class="img-circle img-centre" src="{{services.twitter.profile_image_url}}"/> <div class="pname">{{profile.name}}</div></a>
+  {{else}}
+  <a target="_blank" href="http://facebook.com/{{services.facebook.id}}"><img class="img-circle img-centre" src="http://graph.facebook.com/{{services.facebook.id}}/picture"/><div class="pname">{{profile.name}}</div></a>
+  {{/if}}
+</div>  
+
+
+</template>
+
+<!-- <template name="searchBox">
+    {{> esInput index="users" placeholder="Search..." }}
+
+    <ul>
+        {{#esEach index="users"}}
+            <li>{{profile.name}}</li>
+        {{/esEach}}
+    </ul>
+</template> -->
